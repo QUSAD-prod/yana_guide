@@ -18,6 +18,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  flutter_native_splash: ^1.2.4
   flutter_lints: ^1.0.0
 
 flutter:
@@ -25,3 +28,4 @@ flutter:
 
   assets:
     - assets/
+    - assets/main_root_icons/
