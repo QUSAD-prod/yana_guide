@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:yana_guide/categoty.dart';
+import 'package:yana_guide/custom_behaviour.dart';
 
 class MainRoot extends StatefulWidget {
   const MainRoot({Key? key}) : super(key: key);
@@ -31,7 +34,7 @@ class _MainRootState extends State<MainRoot> {
                 children: [
                   //Заголовок
                   Container(
-                    margin: EdgeInsets.only(top: height * 0.04),
+                    margin: EdgeInsets.only(top: height * 0.025),
                     width: width * 0.85,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -128,33 +131,21 @@ class _MainRootState extends State<MainRoot> {
                         children: [
                           getTile(
                             'Власть',
-                            SvgPicture.asset(
-                              'assets/main_root_icons/user.svg',
-                              width: width * 0.1,
-                              height: width * 0.1,
-                            ),
+                            'assets/main_root_icons/user.svg',
                             const Color(0xFFE9F5F4),
                             width,
                           ),
                           Expanded(child: Container()),
                           getTile(
                             "Правоохра-\nнительные\nорганы",
-                            SvgPicture.asset(
-                              'assets/main_root_icons/town_hall.svg',
-                              width: width * 0.1,
-                              height: width * 0.1,
-                            ),
+                            'assets/main_root_icons/town_hall.svg',
                             const Color(0xFFF6EDE9),
                             width,
                           ),
                           Expanded(child: Container()),
                           getTile(
                             'Медицина',
-                            SvgPicture.asset(
-                              'assets/main_root_icons/medicine.svg',
-                              width: width * 0.1,
-                              height: width * 0.1,
-                            ),
+                            'assets/main_root_icons/medicine.svg',
                             const Color(0xFFE8ECF9),
                             width,
                           ),
@@ -168,33 +159,21 @@ class _MainRootState extends State<MainRoot> {
                         children: [
                           getTile(
                             'Образование',
-                            SvgPicture.asset(
-                              'assets/main_root_icons/book.svg',
-                              width: width * 0.1,
-                              height: width * 0.1,
-                            ),
+                            'assets/main_root_icons/book.svg',
                             const Color(0xFFF9F2E8),
                             width,
                           ),
                           Expanded(child: Container()),
                           getTile(
                             "Обслужи-\nвающие\nорганизации",
-                            SvgPicture.asset(
-                              'assets/main_root_icons/creative_commons.svg',
-                              width: width * 0.1,
-                              height: width * 0.1,
-                            ),
+                            'assets/main_root_icons/creative_commons.svg',
                             const Color(0xFFF4E8F9),
                             width,
                           ),
                           Expanded(child: Container()),
                           getTile(
                             'Безопасность',
-                            SvgPicture.asset(
-                              'assets/main_root_icons/safe_square.svg',
-                              width: width * 0.1,
-                              height: width * 0.1,
-                            ),
+                            'assets/main_root_icons/safe_square.svg',
                             const Color(0xFFDCECEA),
                             width,
                           ),
@@ -207,34 +186,22 @@ class _MainRootState extends State<MainRoot> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           getTile(
-                            "Культура и спорт",
-                            SvgPicture.asset(
-                              'assets/main_root_icons/supervised_user.svg',
-                              width: width * 0.1,
-                              height: width * 0.1,
-                            ),
+                            "Культура и\nспорт",
+                            'assets/main_root_icons/supervised_user.svg',
                             const Color(0xFFE2F5E2),
                             width,
                           ),
                           Expanded(child: Container()),
                           getTile(
-                            "Социальная сфера",
-                            SvgPicture.asset(
-                              'assets/main_root_icons/chat.svg',
-                              width: width * 0.1,
-                              height: width * 0.1,
-                            ),
+                            "Социальная\nсфера",
+                            'assets/main_root_icons/chat.svg',
                             const Color(0xFFF9E8E8),
                             width,
                           ),
                           Expanded(child: Container()),
                           getTile(
                             'Торговля',
-                            SvgPicture.asset(
-                              'assets/main_root_icons/shopping_basket.svg',
-                              width: width * 0.1,
-                              height: width * 0.1,
-                            ),
+                            'assets/main_root_icons/shopping_basket.svg',
                             const Color(0xFFFFE6F3),
                             width,
                           ),
@@ -248,33 +215,21 @@ class _MainRootState extends State<MainRoot> {
                         children: [
                           getTile(
                             'Услуги',
-                            SvgPicture.asset(
-                              'assets/main_root_icons/products.svg',
-                              width: width * 0.1,
-                              height: width * 0.1,
-                            ),
+                            'assets/main_root_icons/products.svg',
                             const Color(0xFFF4E8F9),
                             width,
                           ),
                           Expanded(child: Container()),
                           getTile(
                             'СМИ',
-                            SvgPicture.asset(
-                              'assets/main_root_icons/news.svg',
-                              width: width * 0.1,
-                              height: width * 0.1,
-                            ),
+                            'assets/main_root_icons/news.svg',
                             const Color(0xFFF9F2E8),
                             width,
                           ),
                           Expanded(child: Container()),
                           getTile(
                             'Прочие',
-                            SvgPicture.asset(
-                              'assets/main_root_icons/other.svg',
-                              width: width * 0.1,
-                              height: width * 0.1,
-                            ),
+                            'assets/main_root_icons/other.svg',
                             const Color(0xFFEFEFEF),
                             width,
                           ),
@@ -295,13 +250,23 @@ class _MainRootState extends State<MainRoot> {
   }
 
   //Плитка
-  Widget getTile(String text, Widget icon, Color color, double width) {
+  Widget getTile(String text, String icon, Color color, double width) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(16.0),
-        //TODO Переход на next page
-        onTap: () => {},
+        onTap: () => Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (BuildContext context) => Category.dataConstuctor(
+              {
+                'category': text,
+                'icon': icon,
+                'color': '0x' + color.value.toRadixString(16),
+              },
+            ),
+          ),
+        ),
         highlightColor: Colors.transparent,
         child: Container(
           padding: const EdgeInsets.all(6.0),
@@ -316,7 +281,11 @@ class _MainRootState extends State<MainRoot> {
                   color: color,
                 ),
                 child: Center(
-                  child: icon,
+                  child: SvgPicture.asset(
+                    icon,
+                    width: width * 0.1,
+                    height: width * 0.1,
+                  ),
                 ),
               ),
               Container(
@@ -338,13 +307,5 @@ class _MainRootState extends State<MainRoot> {
         ),
       ),
     );
-  }
-}
-
-class NoPhysicsBehavior extends ScrollBehavior {
-  @override
-  Widget buildViewportChrome(
-      BuildContext context, Widget child, AxisDirection axisDirection) {
-    return child;
   }
 }

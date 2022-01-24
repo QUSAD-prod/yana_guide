@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "36622876243",
+    "project_id": "yanaguide-2856f",
+    "storage_bucket": "yanaguide-2856f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:36622876243:android:f678af65967af6e83f90a6",
+        "android_client_info": {
+          "package_name": "com.ArtemOslopov.yana_guide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "36622876243-oec6hj9b5ld7a02kouupl8j8dug95ou2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ArtemOslopov.yana_guide",
+            "certificate_hash": "fe07bbcc05b2fdddc7966fe927ae5593ac7dbfd1"
+          }
+        },
+        {
+          "client_id": "36622876243-2ofo983jvf85hpe8csd56muouopoali1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCV2MDkP42g6WZfmdccK5g7FDKtyqhwXnI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "36622876243-2ofo983jvf85hpe8csd56muouopoali1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

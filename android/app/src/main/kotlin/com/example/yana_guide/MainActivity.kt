@@ -1,4 +1,4 @@
-package com.example.yana_guide
+package com.ArtemOslopov.yana_guide
 
 import io.flutter.embedding.android.FlutterActivity
 
