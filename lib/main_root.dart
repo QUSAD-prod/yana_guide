@@ -1,8 +1,11 @@
+import 'dart:convert';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:yana_guide/categoty.dart';
 import 'package:yana_guide/custom_behaviour.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class MainRoot extends StatefulWidget {
   const MainRoot({Key? key}) : super(key: key);
@@ -12,6 +15,25 @@ class MainRoot extends StatefulWidget {
 }
 
 class _MainRootState extends State<MainRoot> {
+  Box<Map<String, dynamic>> box = Hive.box('data');
+  DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
+
+  @override
+  void initState() {
+    super.initState();
+    databaseReference.onValue.listen(
+      (event) {
+        DataSnapshot dataSnapshot = event.snapshot;
+        if (dataSnapshot.value != null) {
+          Map<String, dynamic> data = json.decode(
+            json.encode(dataSnapshot.value),
+          );
+          box.put('data', data);
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -260,7 +282,7 @@ class _MainRootState extends State<MainRoot> {
           CupertinoPageRoute(
             builder: (BuildContext context) => Category.dataConstuctor(
               {
-                'category': text,
+                'category': getPath(text),
                 'icon': icon,
                 'color': '0x' + color.value.toRadixString(16),
               },
@@ -307,5 +329,29 @@ class _MainRootState extends State<MainRoot> {
         ),
       ),
     );
+  }
+
+  //Получение пути
+  String getPath(String input) {
+    switch (input) {
+      case "Правоохра-\nнительные\nорганы":
+        return "Правоохранительные органы";
+      case "Обслужи-\nвающие\nорганизации":
+        return "Обслуживающие организации";
+      case "Культура и\nспорт":
+        return "Культура и спорт";
+      case "Социальная\nсфера":
+        return "Социальная сфера";
+      case 'Власть':
+      case 'Медицина':
+      case 'Образование':
+      case 'Безопасность':
+      case 'Торговля':
+      case 'Услуги':
+      case 'СМИ':
+        return input;
+      default:
+        return "Прочие";
+    }
   }
 }
