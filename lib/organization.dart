@@ -132,6 +132,7 @@ class _OrganizationState extends State<Organization> {
     );
   }
 
+  //получение данных
   List<Map<String, dynamic>> getList(input) {
     List<Map<String, dynamic>> output = [];
     input.forEach(
@@ -140,7 +141,8 @@ class _OrganizationState extends State<Organization> {
             key != 'Телефон' &&
             key != 'Почта' &&
             key != 'Телефон 1' &&
-            key != 'Телефон 2') {
+            key != 'Телефон 2' &&
+            key != 'Факс') {
           Map<String, dynamic> temp = {
             'name': key.toString(),
             'child': value,
@@ -190,6 +192,17 @@ class _OrganizationState extends State<Organization> {
     }
     if (widget.data['Телефон 2'] != null) {
       widgetList.add(getMainDataWidget(width, widget.data, 'Телефон 2'));
+      if (widget.data['Факс'] != null) {
+        widgetList.add(
+          Container(
+            height: 1,
+            color: const Color(0xFF868686).withOpacity(0.1),
+          ),
+        );
+      }
+    }
+    if (widget.data['Факс'] != null) {
+      widgetList.add(getMainDataWidget(width, widget.data, 'Факс'));
       if (widget.data['Почта'] != null) {
         widgetList.add(
           Container(
@@ -232,7 +245,9 @@ class _OrganizationState extends State<Organization> {
                             key == 'Телефон 1' ||
                             key == 'Телефон 2'
                         ? 'assets/phone.svg'
-                        : 'assets/mail.svg',
+                        : key == 'Факс'
+                            ? 'assets/phone.svg' //TODO fax icon
+                            : 'assets/mail.svg',
                 width: width * 0.06,
               ),
             ),
@@ -249,7 +264,9 @@ class _OrganizationState extends State<Organization> {
                               key == 'Телефон 1' ||
                               key == 'Телефон 2'
                           ? 'Номер телефона'
-                          : 'Email',
+                          : key == 'Факс'
+                              ? 'Факс'
+                              : 'Email',
                   style: const TextStyle(
                     color: Color(0xFF868686),
                     fontSize: 12,
