@@ -52,6 +52,7 @@ android {
         applicationId "com.ArtemOslopov.yana_guide"
         minSdkVersion 21
         targetSdkVersion 31
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

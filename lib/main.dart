@@ -9,7 +9,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await Hive.initFlutter();
-  await Hive.openBox<Map<String, dynamic>>('data');
+  await Hive.openBox<dynamic>('data');
+  Hive.box('data').clear();
   runApp(const MyApp());
 }
 
@@ -25,8 +26,7 @@ class MyApp extends StatelessWidget {
       ],
     );
     return MaterialApp(
-      // ignore: prefer_const_literals_to_create_immutables
-      localizationsDelegates: [
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

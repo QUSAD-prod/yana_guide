@@ -5,7 +5,7 @@ import 'package:yana_guide/button_back.dart';
 import 'package:yana_guide/custom_behaviour.dart';
 
 class Organization extends StatefulWidget {
-  const Organization.dataConstuctor(
+  const Organization.dataConstructor(
     this.data, {
     Key? key,
     required this.iconPath,
@@ -306,8 +306,8 @@ class _OrganizationState extends State<Organization> {
             onTap: () => Navigator.push(
               context,
               CupertinoPageRoute(
-                builder: (BuildContext context) => Organization.dataConstuctor(
-                  list[i]['child'],
+                builder: (BuildContext context) => Organization.dataConstructor(
+                  Map<String, dynamic>.from(list[i]['child'] as Map),
                   name: list[i]['name'],
                   iconPath: widget.iconPath,
                 ),

@@ -7,7 +7,7 @@ import 'package:yana_guide/custom_behaviour.dart';
 import 'package:yana_guide/organization.dart';
 
 class Category extends StatefulWidget {
-  const Category.dataConstuctor(this.data, {Key? key}) : super(key: key);
+  const Category.dataConstructor(this.data, {Key? key}) : super(key: key);
 
   final Map<String, String> data;
 
@@ -16,15 +16,14 @@ class Category extends StatefulWidget {
 }
 
 class _CategoryState extends State<Category> {
-  late Box<Map<String, dynamic>> box;
+  Box<dynamic> box = Hive.box('data');
   late Map<String, dynamic> data;
   late List<Map<String, dynamic>> list;
 
   @override
   void initState() {
     super.initState();
-    box = Hive.box('data');
-    data = box.get('data', defaultValue: {})!;
+    data = Map<String, dynamic>.from(box.get('data', defaultValue: {}));
     list = getList(data);
   }
 
@@ -138,7 +137,8 @@ class _CategoryState extends State<Category> {
   List<Map<String, dynamic>> getList(Map<String, dynamic> input) {
     List<Map<String, dynamic>> output = [];
     if (input[widget.data['category']] != null) {
-      Map<String, dynamic> category = input[widget.data['category']];
+      Map<String, dynamic> category =
+          Map<String, dynamic>.from(input[widget.data['category']]);
       category.forEach(
         (key, value) {
           Map<String, dynamic> temp = {
@@ -166,8 +166,8 @@ class _CategoryState extends State<Category> {
                 context,
                 CupertinoPageRoute(
                   builder: (BuildContext context) =>
-                      Organization.dataConstuctor(
-                    list[i]['child'],
+                      Organization.dataConstructor(
+                    Map<String, dynamic>.from(list[i]['child'] as Map),
                     name: list[i]['name'],
                     iconPath: widget.data['icon']!,
                   ),
@@ -223,6 +223,7 @@ class _CategoryState extends State<Category> {
               fontSize: 16,
               height: 0.98,
             ),
+            textAlign: TextAlign.center,
           ),
         ),
       );
