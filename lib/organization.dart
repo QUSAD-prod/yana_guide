@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:yana_guide/button_back.dart';
 import 'package:yana_guide/custom_behaviour.dart';
 
@@ -23,9 +24,17 @@ class Organization extends StatefulWidget {
 class _OrganizationState extends State<Organization> {
   late List<Map<String, dynamic>> list;
 
+  BannerAd myBanner = BannerAd(
+    adUnitId: 'ca-app-pub-9786536863361967/9058562365',
+    size: AdSize.banner,
+    request: const AdRequest(),
+    listener: const BannerAdListener(),
+  );
+
   @override
   void initState() {
     super.initState();
+    myBanner.load();
     list = getList(widget.data);
   }
 
@@ -34,82 +43,64 @@ class _OrganizationState extends State<Organization> {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: const Color(0xFFF8F8F8),
-      body: Scrollbar(
-        isAlwaysShown: true,
-        radius: const Radius.circular(15),
-        thickness: width * 0.015,
-        child: Container(
-          margin: EdgeInsets.symmetric(
-            horizontal: width * 0.06,
-          ),
-          child: ScrollConfiguration(
-            behavior: NoPhysicsBehavior(),
-            child: ListView(
-              children: [
-                //Возврат к пред. странице
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: ButtonBack(
-                    onTap: () => Navigator.of(context).pop(),
-                  ),
+      body: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Expanded(
+            child: Scrollbar(
+              isAlwaysShown: true,
+              radius: const Radius.circular(15),
+              thickness: width * 0.015,
+              child: Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: width * 0.06,
                 ),
-                //Заголовок
-                Container(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  width: width * 0.88,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
+                child: ScrollConfiguration(
+                  behavior: NoPhysicsBehavior(),
+                  child: ListView(
                     children: [
+                      //Возврат к пред. странице
                       Container(
-                        margin: const EdgeInsets.only(right: 14),
-                        child: SvgPicture.asset(widget.iconPath),
-                      ),
-                      Expanded(
-                        child: Text(
-                          widget.name,
-                          style: const TextStyle(
-                            color: Color(0xFF232425),
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
-                            height: 0.98,
-                          ),
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
+                        margin: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: ButtonBack(
+                          onTap: () => Navigator.of(context).pop(),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                //Основные данные
-                Container(
-                  width: width * 0.88,
-                  margin: const EdgeInsets.only(bottom: 16),
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.03),
-                        offset: const Offset(0.0, 4.0),
-                        blurRadius: 36.0,
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: getMainDataWidgets(width),
-                  ),
-                ),
-                //Специалисты и другое
-                list.isNotEmpty
-                    ? Container(
+                      //Заголовок
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 16),
                         width: width * 0.88,
-                        margin: const EdgeInsets.only(bottom: 18),
-                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(right: 14),
+                              child: SvgPicture.asset(widget.iconPath),
+                            ),
+                            Expanded(
+                              child: Text(
+                                widget.name,
+                                style: const TextStyle(
+                                  color: Color(0xFF232425),
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w700,
+                                  height: 0.98,
+                                ),
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      //Основные данные
+                      Container(
+                        width: width * 0.88,
+                        margin: const EdgeInsets.only(bottom: 16),
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(20.0),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withOpacity(0.03),
@@ -120,14 +111,53 @@ class _OrganizationState extends State<Organization> {
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
-                          children: getWidgetList(width),
+                          children: getMainDataWidgets(width),
                         ),
-                      )
-                    : Container(),
-              ],
+                      ),
+                      //Специалисты и другое
+                      list.isNotEmpty
+                          ? Container(
+                              width: width * 0.88,
+                              margin: const EdgeInsets.only(bottom: 18),
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.03),
+                                    offset: const Offset(0.0, 4.0),
+                                    blurRadius: 36.0,
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: getWidgetList(width),
+                              ),
+                            )
+                          : Container(),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
+          Container(
+            height: 1,
+            color: (Theme.of(context).brightness == Brightness.light
+                    ? const Color(0xFF363738)
+                    : const Color(0xFFD7D8D9))
+                .withOpacity(0.12),
+          ),
+          Center(
+            child: SizedBox(
+              height: myBanner.size.height.toDouble(),
+              width: myBanner.size.width.toDouble(),
+              child: AdWidget(ad: myBanner),
+            ),
+          ),
+        ],
       ),
     );
   }
