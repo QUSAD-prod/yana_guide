@@ -97,7 +97,7 @@ class _SearchPageState extends State<SearchPage> {
                       CupertinoPageRoute(
                         builder: (BuildContext context) =>
                             Organization.dataConstructor(
-                          temp['value'],
+                          Map<String, dynamic>.from(temp['value'] as Map),
                           name: temp['name'],
                           iconPath: getPathIcon(temp['category']),
                         ),
