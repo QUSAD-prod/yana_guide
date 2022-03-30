@@ -91,7 +91,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Container(
                 margin: EdgeInsets.only(bottom: height * 0.02),
                 child: Text(
-                  "by @vesto_verkhoyanya",
+                  "by @vesti_verkhoyanya",
                   style: TextStyle(
                     color: Colors.white.withOpacity(0.7),
                     fontSize: 16,
