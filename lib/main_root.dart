@@ -2,7 +2,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:yana_guide/categoty.dart';
 import 'package:yana_guide/custom_behaviour.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -20,17 +19,9 @@ class _MainRootState extends State<MainRoot> {
   DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
   late TextEditingController searchController = TextEditingController();
 
-  BannerAd myBanner = BannerAd(
-    adUnitId: 'ca-app-pub-9786536863361967/9769008801',
-    size: AdSize.banner,
-    request: const AdRequest(),
-    listener: const BannerAdListener(),
-  );
-
   @override
   void initState() {
     super.initState();
-    myBanner.load();
     databaseReference.onValue.listen(
       (event) {
         DataSnapshot dataSnapshot = event.snapshot;
@@ -53,7 +44,7 @@ class _MainRootState extends State<MainRoot> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    print(box.get('data'));
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8F8F8),
       body: ValueListenableBuilder(
@@ -62,259 +53,232 @@ class _MainRootState extends State<MainRoot> {
           children: [
             GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(
-                    child: Scrollbar(
-                      isAlwaysShown: true,
-                      radius: const Radius.circular(15),
-                      thickness: width * 0.015,
-                      child: Container(
-                        margin: EdgeInsets.symmetric(
-                          horizontal: width * 0.06,
-                        ),
-                        child: ScrollConfiguration(
-                          behavior: NoPhysicsBehavior(),
-                          child: ListView(
-                            children: [
-                              //Заголовок
-                              Container(
-                                margin: EdgeInsets.only(top: height * 0.025),
-                                width: width * 0.85,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
-                                    Text(
-                                      'Справочник',
-                                      style: TextStyle(
-                                        fontSize: 27,
-                                        fontWeight: FontWeight.w300,
-                                        color: Color(0xFF232425),
-                                      ),
-                                    ),
-                                    Text(
-                                      "Верхоянского района",
-                                      style: TextStyle(
-                                        fontSize: 27,
-                                        fontWeight: FontWeight.w900,
-                                        color: Color(0xFF232425),
-                                      ),
-                                    ),
-                                  ],
+              child: Scrollbar(
+                thumbVisibility: true,
+                radius: const Radius.circular(15),
+                thickness: width * 0.015,
+                child: Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: width * 0.06,
+                  ),
+                  child: ScrollConfiguration(
+                    behavior: NoPhysicsBehavior(),
+                    child: ListView(
+                      children: [
+                        //Заголовок
+                        Container(
+                          margin: EdgeInsets.only(top: height * 0.025),
+                          width: width * 0.85,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                'Справочник',
+                                style: TextStyle(
+                                  fontSize: 27,
+                                  fontWeight: FontWeight.w300,
+                                  color: Color(0xFF232425),
                                 ),
                               ),
-                              //Поиск
-                              Container(
-                                margin: EdgeInsets.only(
-                                  top: height * 0.035,
-                                  bottom: height * 0.045,
+                              Text(
+                                "Верхоянского района",
+                                style: TextStyle(
+                                  fontSize: 27,
+                                  fontWeight: FontWeight.w900,
+                                  color: Color(0xFF232425),
                                 ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16.0),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.03),
-                                      offset: const Offset(0.0, 4.0),
-                                      blurRadius: 36,
-                                    ),
-                                  ],
-                                ),
-                                child: TextField(
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                  keyboardType: TextInputType.text,
-                                  textInputAction: TextInputAction.search,
-                                  controller: searchController,
-                                  onSubmitted: (String text) => search(text),
-                                  cursorRadius: const Radius.circular(2),
-                                  cursorColor: const Color(0xFF232425),
-                                  cursorWidth: 2,
-                                  decoration: InputDecoration(
-                                    suffixIcon: Material(
-                                      color: Colors.transparent,
-                                      child: InkWell(
-                                        radius: 16.0,
-                                        borderRadius:
-                                            BorderRadius.circular(64.0),
-                                        highlightColor: Colors.transparent,
-                                        onTap: () =>
-                                            search(searchController.text),
-                                        child: const Icon(
-                                          Icons.search,
-                                          color: Color(0xFF232425),
-                                        ),
-                                      ),
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    hintText: "Поиск по справочнику...",
-                                    hintStyle: const TextStyle(
-                                      color: Color(0xFF868686),
-                                      fontSize: 16,
-                                    ),
-                                    contentPadding: const EdgeInsets.all(20.0),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(16.0),
-                                      borderSide: const BorderSide(
-                                        color: Colors.transparent,
-                                        width: 0,
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(16.0),
-                                      borderSide: const BorderSide(
-                                        color: Colors.transparent,
-                                        width: 0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              //Плитки
-                              Column(
-                                children: [
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      getTile(
-                                        'Власть',
-                                        'assets/main_root_icons/user.svg',
-                                        const Color(0xFFE9F5F4),
-                                        width,
-                                      ),
-                                      Expanded(child: Container()),
-                                      getTile(
-                                        "Правоохра-\nнительные\nорганы",
-                                        'assets/main_root_icons/town_hall.svg',
-                                        const Color(0xFFF6EDE9),
-                                        width,
-                                      ),
-                                      Expanded(child: Container()),
-                                      getTile(
-                                        'Медицина',
-                                        'assets/main_root_icons/medicine.svg',
-                                        const Color(0xFFE8ECF9),
-                                        width,
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    height: 20,
-                                  ),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      getTile(
-                                        'Образование',
-                                        'assets/main_root_icons/book.svg',
-                                        const Color(0xFFF9F2E8),
-                                        width,
-                                      ),
-                                      Expanded(child: Container()),
-                                      getTile(
-                                        "Обслужи-\nвающие\nорганизации",
-                                        'assets/main_root_icons/creative_commons.svg',
-                                        const Color(0xFFF4E8F9),
-                                        width,
-                                      ),
-                                      Expanded(child: Container()),
-                                      getTile(
-                                        'Безопасность',
-                                        'assets/main_root_icons/safe_square.svg',
-                                        const Color(0xFFDCECEA),
-                                        width,
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    height: 20,
-                                  ),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      getTile(
-                                        "Культура и\nспорт",
-                                        'assets/main_root_icons/supervised_user.svg',
-                                        const Color(0xFFE2F5E2),
-                                        width,
-                                      ),
-                                      Expanded(child: Container()),
-                                      getTile(
-                                        "Социальная\nсфера",
-                                        'assets/main_root_icons/chat.svg',
-                                        const Color(0xFFF9E8E8),
-                                        width,
-                                      ),
-                                      Expanded(child: Container()),
-                                      getTile(
-                                        'Торговля',
-                                        'assets/main_root_icons/shopping_basket.svg',
-                                        const Color(0xFFFFE6F3),
-                                        width,
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    height: 20,
-                                  ),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      getTile(
-                                        'Услуги',
-                                        'assets/main_root_icons/products.svg',
-                                        const Color(0xFFF4E8F9),
-                                        width,
-                                      ),
-                                      Expanded(child: Container()),
-                                      getTile(
-                                        'СМИ',
-                                        'assets/main_root_icons/news.svg',
-                                        const Color(0xFFF9F2E8),
-                                        width,
-                                      ),
-                                      Expanded(child: Container()),
-                                      getTile(
-                                        'Прочие',
-                                        'assets/main_root_icons/other.svg',
-                                        const Color(0xFFEFEFEF),
-                                        width,
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    height: 50,
-                                  ),
-                                ],
                               ),
                             ],
                           ),
                         ),
-                      ),
+                        //Поиск
+                        Container(
+                          margin: EdgeInsets.only(
+                            top: height * 0.035,
+                            bottom: height * 0.045,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.03),
+                                offset: const Offset(0.0, 4.0),
+                                blurRadius: 36,
+                              ),
+                            ],
+                          ),
+                          child: TextField(
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.search,
+                            controller: searchController,
+                            onSubmitted: (String text) => search(text),
+                            cursorRadius: const Radius.circular(2),
+                            cursorColor: const Color(0xFF232425),
+                            cursorWidth: 2,
+                            decoration: InputDecoration(
+                              suffixIcon: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  radius: 16.0,
+                                  borderRadius: BorderRadius.circular(64.0),
+                                  highlightColor: Colors.transparent,
+                                  onTap: () => search(searchController.text),
+                                  child: const Icon(
+                                    Icons.search,
+                                    color: Color(0xFF232425),
+                                  ),
+                                ),
+                              ),
+                              filled: true,
+                              fillColor: Colors.white,
+                              hintText: "Поиск по справочнику...",
+                              hintStyle: const TextStyle(
+                                color: Color(0xFF868686),
+                                fontSize: 16,
+                              ),
+                              contentPadding: const EdgeInsets.all(20.0),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16.0),
+                                borderSide: const BorderSide(
+                                  color: Colors.transparent,
+                                  width: 0,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16.0),
+                                borderSide: const BorderSide(
+                                  color: Colors.transparent,
+                                  width: 0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        //Плитки
+                        Column(
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                getTile(
+                                  'Власть',
+                                  'assets/main_root_icons/user.svg',
+                                  const Color(0xFFE9F5F4),
+                                  width,
+                                ),
+                                Expanded(child: Container()),
+                                getTile(
+                                  "Правоохра-\nнительные\nорганы",
+                                  'assets/main_root_icons/town_hall.svg',
+                                  const Color(0xFFF6EDE9),
+                                  width,
+                                ),
+                                Expanded(child: Container()),
+                                getTile(
+                                  'Медицина',
+                                  'assets/main_root_icons/medicine.svg',
+                                  const Color(0xFFE8ECF9),
+                                  width,
+                                ),
+                              ],
+                            ),
+                            Container(
+                              height: 20,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                getTile(
+                                  'Образование',
+                                  'assets/main_root_icons/book.svg',
+                                  const Color(0xFFF9F2E8),
+                                  width,
+                                ),
+                                Expanded(child: Container()),
+                                getTile(
+                                  "Обслужи-\nвающие\nорганизации",
+                                  'assets/main_root_icons/creative_commons.svg',
+                                  const Color(0xFFF4E8F9),
+                                  width,
+                                ),
+                                Expanded(child: Container()),
+                                getTile(
+                                  'Безопасность',
+                                  'assets/main_root_icons/safe_square.svg',
+                                  const Color(0xFFDCECEA),
+                                  width,
+                                ),
+                              ],
+                            ),
+                            Container(
+                              height: 20,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                getTile(
+                                  "Культура и\nспорт",
+                                  'assets/main_root_icons/supervised_user.svg',
+                                  const Color(0xFFE2F5E2),
+                                  width,
+                                ),
+                                Expanded(child: Container()),
+                                getTile(
+                                  "Социальная\nсфера",
+                                  'assets/main_root_icons/chat.svg',
+                                  const Color(0xFFF9E8E8),
+                                  width,
+                                ),
+                                Expanded(child: Container()),
+                                getTile(
+                                  'Торговля',
+                                  'assets/main_root_icons/shopping_basket.svg',
+                                  const Color(0xFFFFE6F3),
+                                  width,
+                                ),
+                              ],
+                            ),
+                            Container(
+                              height: 20,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                getTile(
+                                  'Услуги',
+                                  'assets/main_root_icons/products.svg',
+                                  const Color(0xFFF4E8F9),
+                                  width,
+                                ),
+                                Expanded(child: Container()),
+                                getTile(
+                                  'СМИ',
+                                  'assets/main_root_icons/news.svg',
+                                  const Color(0xFFF9F2E8),
+                                  width,
+                                ),
+                                Expanded(child: Container()),
+                                getTile(
+                                  'Прочие',
+                                  'assets/main_root_icons/other.svg',
+                                  const Color(0xFFEFEFEF),
+                                  width,
+                                ),
+                              ],
+                            ),
+                            Container(
+                              height: 50,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  Container(
-                    height: 1,
-                    color: (Theme.of(context).brightness == Brightness.light
-                            ? const Color(0xFF363738)
-                            : const Color(0xFFD7D8D9))
-                        .withOpacity(0.12),
-                  ),
-                  Center(
-                    child: SizedBox(
-                      height: myBanner.size.height.toDouble(),
-                      width: myBanner.size.width.toDouble(),
-                      child: AdWidget(ad: myBanner),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
             box.get('data', defaultValue: {}) == {} || box.get('data') == null
@@ -423,7 +387,7 @@ class _MainRootState extends State<MainRoot> {
     if (input.length > 2) {
       ScaffoldMessenger.of(context).clearSnackBars();
       List<Map<String, dynamic>> export = [];
-      Map<String, dynamic> data = box.get('data')!;
+      Map<String, dynamic> data = Map<String, dynamic>.from(box.get('data')!);
       data.forEach(
         (key, value) {
           String category = key;

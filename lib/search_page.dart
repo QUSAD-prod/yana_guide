@@ -22,7 +22,7 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F8F8),
       body: Scrollbar(
-        isAlwaysShown: true,
+        thumbVisibility: true,
         radius: const Radius.circular(15),
         thickness: width * 0.015,
         child: Container(

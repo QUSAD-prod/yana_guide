@@ -1,7 +1,8 @@
+import 'dart:collection';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:yana_guide/button_back.dart';
 import 'package:yana_guide/custom_behaviour.dart';
@@ -18,21 +19,14 @@ class Category extends StatefulWidget {
 
 class _CategoryState extends State<Category> {
   Box<dynamic> box = Hive.box('data');
-  late Map<String, dynamic> data;
+  late SplayTreeMap<String, dynamic> data;
   late List<Map<String, dynamic>> list;
-
-  BannerAd myBanner = BannerAd(
-    adUnitId: 'ca-app-pub-9786536863361967/2684725703',
-    size: AdSize.banner,
-    request: const AdRequest(),
-    listener: const BannerAdListener(),
-  );
 
   @override
   void initState() {
     super.initState();
-    myBanner.load();
-    data = Map<String, dynamic>.from(box.get('data', defaultValue: {}));
+    data =
+        SplayTreeMap<String, dynamic>.from(box.get('data', defaultValue: {}));
     list = getList(data);
   }
 
@@ -43,121 +37,99 @@ class _CategoryState extends State<Category> {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F8F8),
       body: Scrollbar(
-        isAlwaysShown: true,
+        thumbVisibility: true,
         radius: const Radius.circular(15),
         thickness: width * 0.015,
         child: Container(
           margin: EdgeInsets.symmetric(
             horizontal: width * 0.06,
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                child: ScrollConfiguration(
-                  behavior: NoPhysicsBehavior(),
-                  child: ListView(
-                    children: [
-                      //Возврат к пред. странице
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: ButtonBack(
-                          onTap: () => Navigator.of(context).pop(),
-                        ),
-                      ),
-                      //Обложка
-                      Container(
-                        width: width * 0.88,
-                        margin: const EdgeInsets.only(bottom: 12.0),
-                        padding: EdgeInsets.symmetric(vertical: height * 0.05),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.03),
-                              offset: const Offset(0.0, 4.0),
-                              blurRadius: 36.0,
-                            ),
-                          ],
-                        ),
-                        child: Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                width: width * 0.25,
-                                height: width * 0.25,
-                                decoration: BoxDecoration(
-                                  color:
-                                      Color(int.parse(widget.data['color']!)),
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                child: Center(
-                                  child: SvgPicture.asset(
-                                    widget.data['icon']!,
-                                    width: width * 0.12,
-                                    height: width * 0.12,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 16.0,
-                              ),
-                              Text(
-                                widget.data['category']!,
-                                style: const TextStyle(
-                                  fontSize: 26,
-                                  fontWeight: FontWeight.w700,
-                                  height: 0.97,
-                                  color: Color(0xFF232425),
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      //Список
-                      Container(
-                        width: width * 0.88,
-                        margin: const EdgeInsets.only(bottom: 18),
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.03),
-                              offset: const Offset(0.0, 4.0),
-                              blurRadius: 36.0,
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: getWidgetList(width),
-                        ),
+          child: ScrollConfiguration(
+            behavior: NoPhysicsBehavior(),
+            child: ListView(
+              children: [
+                //Возврат к пред. странице
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: ButtonBack(
+                    onTap: () => Navigator.of(context).pop(),
+                  ),
+                ),
+                //Обложка
+                Container(
+                  width: width * 0.88,
+                  margin: const EdgeInsets.only(bottom: 12.0),
+                  padding: EdgeInsets.symmetric(vertical: height * 0.05),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.03),
+                        offset: const Offset(0.0, 4.0),
+                        blurRadius: 36.0,
                       ),
                     ],
                   ),
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: width * 0.25,
+                          height: width * 0.25,
+                          decoration: BoxDecoration(
+                            color: Color(int.parse(widget.data['color']!)),
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          child: Center(
+                            child: SvgPicture.asset(
+                              widget.data['icon']!,
+                              width: width * 0.12,
+                              height: width * 0.12,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 16.0,
+                        ),
+                        Text(
+                          widget.data['category']!,
+                          style: const TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.w700,
+                            height: 0.97,
+                            color: Color(0xFF232425),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-              Container(
-                height: 1,
-                color: (Theme.of(context).brightness == Brightness.light
-                        ? const Color(0xFF363738)
-                        : const Color(0xFFD7D8D9))
-                    .withOpacity(0.12),
-              ),
-              Center(
-                child: SizedBox(
-                  height: myBanner.size.height.toDouble(),
-                  width: myBanner.size.width.toDouble(),
-                  child: AdWidget(ad: myBanner),
+                //Список
+                Container(
+                  width: width * 0.88,
+                  margin: const EdgeInsets.only(bottom: 18),
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.03),
+                        offset: const Offset(0.0, 4.0),
+                        blurRadius: 36.0,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: getWidgetList(width),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -165,17 +137,20 @@ class _CategoryState extends State<Category> {
   }
 
   //Получение элементов списка
-  List<Map<String, dynamic>> getList(Map<String, dynamic> input) {
-    List<Map<String, dynamic>> output = [];
+  List<SplayTreeMap<String, dynamic>> getList(
+      SplayTreeMap<String, dynamic> input) {
+    List<SplayTreeMap<String, dynamic>> output = [];
     if (input[widget.data['category']] != null) {
-      Map<String, dynamic> category =
-          Map<String, dynamic>.from(input[widget.data['category']]);
+      SplayTreeMap<String, dynamic> category =
+          SplayTreeMap<String, dynamic>.from(input[widget.data['category']]);
       category.forEach(
         (key, value) {
-          Map<String, dynamic> temp = {
-            'name': key.toString(),
-            'child': value,
-          };
+          SplayTreeMap<String, dynamic> temp = SplayTreeMap.from(
+            {
+              'name': key.toString(),
+              'child': value,
+            },
+          );
           output.add(temp);
         },
       );
